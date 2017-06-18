@@ -22,15 +22,24 @@ def mysql_select_como_diccionario(query):
     cur.execute(query)
     return cur.fetchall()
 
-
+@app.route('/api/distritos')
+def distritos():
+    query = '''
+        SELECT
+          *
+        FROM
+          s_distrito
+    '''
+    return flask.jsonify(data=mysql_select_como_diccionario(query))
 
 @app.route('/')
-def temp():
+def index():
     ROOT_URL = request.host_url
     data = {
         "demo": 123,
         "ROOT_URL": ROOT_URL,
         "DOKKU_APP_TYPE": DOKKU_APP_TYPE,
+        "distritos": os.path.join(ROOT_URL, "api", "distritos")
     }
     return flask.jsonify(data=data)
 

@@ -1,5 +1,5 @@
 # coding: utf-8
-import MySQLdb
+import MySQLdb, MySQLdb.cursors
 import os
 import flask
 from flask import request
@@ -21,7 +21,7 @@ app = flask.Flask(__name__)
 
 
 def mysql_select_como_diccionario(query):
-    db = MySQLdb.connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, cursorclass=MySQLdb.cursors.DictCursor)
+    db = MySQLdb.connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, cursorclass=MySQLdb.cursors.DictCursor, use_unicode=True, charset="utf8")
     cur = db.cursor()
     cur.execute(query)
     return cur.fetchall()

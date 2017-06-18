@@ -19,3 +19,11 @@ gunicorn app:app
 ```
 python app.py
 ```
+
+
+Por último, para hacer deploys, asegurate de tener configurado
+tu remoto a dokku y luego ejecutar:
+
+```
+make deploy
+```

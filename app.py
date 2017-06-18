@@ -7,8 +7,8 @@ from urlparse import urlparse
 import re
 from flask import json, Response
 
-DATABASE_URL = os.environ.get('DATABASE_URL', None)
-DOKKU_APP_TYPE = os.environ.get('DOKKU_APP_TYPE', None)
+DATABASE_URL = os.environ['DATABASE_URL']
+DOKKU_APP_TYPE = os.environ['DOKKU_APP_TYPE']
 
 
 DB_USER = 'mysql'

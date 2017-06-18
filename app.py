@@ -21,7 +21,7 @@ app = flask.Flask(__name__)
 
 
 def mysql_select_como_diccionario(query):
-    db = MySQLdb.connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME)
+    db = MySQLdb.connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, cursorclass=MySQLdb.cursors.DictCursor)
     cur = db.cursor()
     cur.execute(query)
     return cur.fetchall()
@@ -35,7 +35,7 @@ def convertir_en_respuesta(nombre_del_recurso, query):
      nombre_del_recurso: resultado
     }
 
-    json_string = json.dumps(data, ensure_ascii = False)
+    json_string = json.dumps(data, ensure_ascii=False)
     content_type = "application/json; charset=utf-8"
     response = Response(json_string, content_type=content_type)
     return response

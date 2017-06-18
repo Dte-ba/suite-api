@@ -37,7 +37,7 @@ def convertir_en_respuesta(nombre_del_recurso, query):
 
     json_string = json.dumps(data, ensure_ascii = False)
     content_type = "application/json; charset=utf-8"
-    response = Response(json_response, content_type=content_type)
+    response = Response(json_string, content_type=content_type)
     return response
 
 @app.route('/api/distritos')

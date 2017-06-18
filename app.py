@@ -10,7 +10,7 @@ DOKKU_APP_TYPE = os.environ['DOKKU_APP_TYPE']
 
 DB_USER = 'mysql'
 DB_PASSWORD = re.search(".*:(.*)@", DATABASE_URL).group(1)
-DB_HOST = re.search(".*@(.*)\/.*", DATABASE_URL).group(1)
+DB_HOST = re.search(".*@(.*:.*)\/.*", DATABASE_URL).group(1)
 DB_NAME = re.search(".*/(.*)", DATABASE_URL).group(1)
 
 app = flask.Flask(__name__)

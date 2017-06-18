@@ -24,13 +24,15 @@ def mysql_select_como_diccionario(query):
 
 @app.route('/api/distritos')
 def distritos():
-    query = '''
-        SELECT
-          *
-        FROM
-          s_distrito
-    '''
-    return flask.jsonify(data=mysql_select_como_diccionario(query))
+    query = "SELECT * FROM s_distrito"
+    return convertir_en_respuesta('distritos', query)
+
+
+def convertir_en_respuesta(nombre_del_recurso, query):
+    resultado = mysql_select_como_diccionario(query)
+    cantidad = len(resultado)
+    return flask.jsonify(cantidad=cantidad, nombre_del_recurso=resultado)
+
 
 @app.route('/')
 def index():

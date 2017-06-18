@@ -1,9 +1,11 @@
+# coding: utf-8
 import MySQLdb
 import os
 import flask
 from flask import request
 from urlparse import urlparse
 import re
+from flask import json, Response
 
 DATABASE_URL = os.environ.get('DATABASE_URL', None)
 DOKKU_APP_TYPE = os.environ.get('DOKKU_APP_TYPE', None)
@@ -27,8 +29,16 @@ def mysql_select_como_diccionario(query):
 def convertir_en_respuesta(nombre_del_recurso, query):
     resultado = mysql_select_como_diccionario(query)
     cantidad = len(resultado)
-    return flask.jsonify(cantidad=cantidad, nombre_del_recurso=resultado)
 
+    data = {
+     "cantidad": cantidad,
+     nombre_del_recurso: resultado
+    }
+
+    json_string = json.dumps(data, ensure_ascii = False)
+    content_type = "application/json; charset=utf-8"
+    response = Response(json_response, content_type=content_type)
+    return response
 
 @app.route('/api/distritos')
 def distritos():

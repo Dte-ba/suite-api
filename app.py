@@ -40,6 +40,74 @@ def convertir_en_respuesta(nombre_del_recurso, query):
     response = Response(json_string, content_type=content_type)
     return response
 
+@app.route('/api/usuarios')
+def usuarios():
+    query = """
+        SELECT
+          s_usuario_nivel.ids_region,
+          s_contratador.nombre,
+          s_cargo_proyectos.nombre,
+          s_usuarios.nombre,
+          s_usuarios.estado,
+          s_usuarios.fecha_nac,
+          s_usuarios.dni,
+          s_usuarios.celular,
+          s_usuarios.telefono,
+          s_usuarios.direccion,
+          s_usuarios.email,
+          s_usuarios.zona,
+          s_usuarios.ids_usuarios,
+          s_usuarios.cbu,
+          s_usuarios.cuil
+      FROM
+          s_usuarios
+      INNER JOIN
+          s_usuario_nivel
+      ON
+          s_usuarios.ids_usuarios = s_usuario_nivel.ids_usuarios
+      INNER JOIN
+          s_niveles_acceso
+      ON
+          s_usuario_nivel.ids_niveles_acceso = s_niveles_acceso.ids_niveles_acceso
+      INNER JOIN
+          s_contratador
+      ON
+          s_niveles_acceso.ids_contratador = s_contratador.ids_contratador
+      INNER JOIN
+          s_cargo_proyectos
+      ON
+          s_niveles_acceso.ids_cargo_proyectos = s_cargo_proyectos.ids_cargo_proyectos
+      WHERE
+          s_usuarios.estado = 1
+    """
+    return convertir_en_respuesta('usuarios', query)
+
+@app.route('/api/escuelas')
+def escuelas():
+    query = """
+    SELECT
+      *
+    FROM
+      s_escuela
+    """
+    return convertir_en_respuesta('escuelas', query)
+
+@app.route('/api/localidades')
+def localidades():
+    query = """
+    SELECT
+      localidad.nombre AS `localidad`,
+      distrito.nombre AS `distrito`,
+      distrito.ids_region AS `region`
+    FROM
+      `s_distrito_localidad` AS `localidad`
+    INNER JOIN
+      `s_distrito` AS `distrito`
+    ON
+      `distrito`.`ids_distrito` = `localidad`.`ids_distrito`
+    """
+    return convertir_en_respuesta('localidades', query)
+
 @app.route('/api/distritos')
 def distritos():
     query = "SELECT * FROM s_distrito"
@@ -49,7 +117,10 @@ def distritos():
 def index():
     ROOT_URL = request.host_url
     data = {
-        "distritos": os.path.join(ROOT_URL, "api", "distritos")
+        "usuarios": os.path.join(ROOT_URL, "api", "usuarios"),
+        "escuelas": os.path.join(ROOT_URL, "api", "escuelas"),
+        "localidades": os.path.join(ROOT_URL, "api", "localidades"),
+        "distritos": os.path.join(ROOT_URL, "api", "distritos"),
     }
     return flask.jsonify(data=data)
 

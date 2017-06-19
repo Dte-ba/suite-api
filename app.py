@@ -84,10 +84,41 @@ def usuarios():
 @app.route('/api/escuelas')
 def escuelas():
     query = """
-    SELECT
-      *
-    FROM
-      s_escuela
+        SELECT
+        	escuela.nombre AS `nombre`,
+            escuela.cue AS `cue`,
+            escuela.telefono AS `telefono`,
+            escuela.direccion AS `direccion`,
+            localidad.nombre AS `localidad`,
+            escuela.lat AS `latitud`,
+            escuela.lng AS `longitud`,
+            tipo_financiamiento.nombre AS `tipo_financiamiento`,
+            tipo_gestion.nombre AS `tipo_gestion`,
+            nivel.nombre AS `nivel`,
+            area.nombre AS `area`,
+            escuela.estado AS `estado`
+        FROM
+            `s_escuela` AS `escuela`
+        INNER JOIN
+        	`s_distrito_localidad` AS `localidad`
+        ON
+        	`escuela`.`ids_distrito_localidad` = `localidad`.`ids_distrito_localidad`
+        INNER JOIN
+        	`s_tipo_financiamiento` AS `tipo_financiamiento`
+        ON
+        	`escuela`.`ids_tipo_financiamiento` = `tipo_financiamiento`.`ids_tipo_financiamiento`
+        INNER JOIN
+        	`s_gestion` AS `tipo_gestion`
+        ON
+        	`escuela`.`ids_gestion` = `tipo_gestion`.`ids_gestion`
+        INNER JOIN
+        	`s_tipo` AS `nivel`
+        ON
+        	`escuela`.`ids_tipo` = `nivel`.`ids_tipo`
+        INNER JOIN
+        	`s_area` AS `area`
+        ON
+        	`escuela`.`ids_area` = `area`.`ids_area`
     """
     return convertir_en_respuesta('escuelas', query)
 

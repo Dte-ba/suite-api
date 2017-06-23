@@ -85,6 +85,7 @@ def usuarios():
 def escuelas():
     query = """
         SELECT
+        	escuela.ids_escuela AS `id`,
         	escuela.nombre AS `nombre`,
             escuela.cue AS `cue`,
             escuela.telefono AS `telefono`,

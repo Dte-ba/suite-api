@@ -96,7 +96,6 @@ def escuelas():
             tipo_gestion.nombre AS `tipo_gestion`,
             nivel.nombre AS `nivel`,
             area.nombre AS `area`,
-            programa_nombre.nombre AS `programa`,
             escuela.estado AS `estado`
         FROM
             `s_escuela` AS `escuela`

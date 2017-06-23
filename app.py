@@ -97,7 +97,12 @@ def escuelas():
             tipo_gestion.nombre AS `tipo_gestion`,
             nivel.nombre AS `nivel`,
             area.nombre AS `area`,
-            escuela.estado AS `estado`
+            escuela.estado AS `estado`,
+            servidor.marca AS `marca`,
+            servidor.serie AS `serie`,
+            ups_rack.rack AS `rack`,
+            ups_rack.ups AS `ups`,
+            ups_rack.estado AS `piso_estado`
         FROM
             `s_escuela` AS `escuela`
         INNER JOIN
@@ -120,6 +125,18 @@ def escuelas():
         	`s_area` AS `area`
         ON
         	`escuela`.`ids_area` = `area`.`ids_area`
+        INNER JOIN
+            `s_piso` AS `piso`
+        ON
+            `piso`.`ids_escuela` = `escuela`.`ids_escuela`
+        INNER JOIN
+            `s_servidor` AS `servidor`
+        ON
+            `servidor`.`ids_piso` = `piso`.`ids_piso`
+        INNER JOIN
+            `s_ups_rack` AS `ups_rack`
+        ON
+            `ups_rack`.`ids_piso` = `piso`.`ids_piso`
     """
     return convertir_en_respuesta('escuelas', query)
 

@@ -140,6 +140,33 @@ def escuelas():
     """
     return convertir_en_respuesta('escuelas', query)
 
+@app.route('/api/pisos')
+def pisos():
+    query = """
+        SELECT
+            escuela.cue AS `cue`,
+            servidor.marca AS `marca`,
+            servidor.serie AS `serie`,
+            ups_rack.rack AS `rack`,
+            ups_rack.ups AS `ups`,
+            ups_rack.estado AS `piso_estado`
+        FROM
+            `s_escuela` AS `escuela`
+        INNER JOIN
+            `s_piso` AS `piso`
+        ON
+            `piso`.`ids_escuela` = `escuela`.`ids_escuela`
+        INNER JOIN
+            `s_servidor` AS `servidor`
+        ON
+            `servidor`.`ids_piso` = `piso`.`ids_piso`
+        INNER JOIN
+            `s_ups_rack` AS `ups_rack`
+        ON
+            `ups_rack`.`ids_piso` = `piso`.`ids_piso`
+    """
+    return convertir_en_respuesta('pisos', query)
+
 @app.route('/api/localidades')
 def localidades():
     query = """
@@ -156,6 +183,30 @@ def localidades():
     """
     return convertir_en_respuesta('localidades', query)
 
+@app.route('/api/contactos')
+def contactos():
+    query = """
+        SELECT
+            contactos.nombre AS nombre,
+            contactos.telefono_part AS telefono,
+            contactos.celular AS celular,
+            contactos.email AS email,
+            contactos.horario AS horario,
+            cargo.nombre AS cargo,
+            escuela.cue AS escuela
+        FROM
+            s_contactos AS contactos
+        INNER JOIN
+            s_cargo AS cargo
+        ON
+            cargo.ids_cargo = contactos.ids_cargo
+        INNER JOIN
+            s_escuela AS escuela
+        ON
+            escuela.ids_escuela = contactos.ids_escuela
+    """
+    return convertir_en_respuesta('contactos', query)
+
 @app.route('/api/distritos')
 def distritos():
     query = "SELECT * FROM s_distrito"
@@ -169,6 +220,8 @@ def index():
         "escuelas": os.path.join(ROOT_URL, "api", "escuelas"),
         "localidades": os.path.join(ROOT_URL, "api", "localidades"),
         "distritos": os.path.join(ROOT_URL, "api", "distritos"),
+        "contactos": os.path.join(ROOT_URL, "api", "contactos"),
+        "pisos": os.path.join(ROOT_URL, "api", "pisos"),
     }
     return flask.jsonify(data=data)
 

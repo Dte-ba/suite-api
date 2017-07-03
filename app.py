@@ -207,6 +207,25 @@ def contactos():
     """
     return convertir_en_respuesta('contactos', query)
 
+@app.route('/api/programas')
+def programas():
+    query = """
+        SELECT
+            escuela.cue AS `cue`,
+            programa.nombre AS `programa`
+        FROM
+            `s_escuela` AS `escuela`
+        INNER JOIN
+            `s_programa_escuela` AS `programa_escuela`
+        ON
+            `programa_escuela`.`ids_escuela` = `escuela`.`ids_escuela`
+		INNER JOIN
+        	`s_programa` AS `programa`
+        ON
+        	`programa`.ids_programa = `programa_escuela`.`ids_programa`
+    """
+    return convertir_en_respuesta('programas', query)
+
 @app.route('/api/distritos')
 def distritos():
     query = "SELECT * FROM s_distrito"
@@ -222,6 +241,7 @@ def index():
         "distritos": os.path.join(ROOT_URL, "api", "distritos"),
         "contactos": os.path.join(ROOT_URL, "api", "contactos"),
         "pisos": os.path.join(ROOT_URL, "api", "pisos"),
+        "programas": os.path.join(ROOT_URL, "api", "programas"),
     }
     return flask.jsonify(data=data)
 

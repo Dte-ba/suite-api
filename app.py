@@ -253,6 +253,21 @@ WHERE
     """
     return convertir_en_respuesta('eventos', query)
 
+@app.route('/api/categorias_agenda')
+def categorias_agenda():
+    query = """
+    SELECT
+        categoria.nombre AS `categoria`,
+        subcategoria.nombre AS `subcategoria`
+    FROM
+        `agenda_subcategoria` AS `subcategoria`
+    INNER JOIN
+        `agenda_categoria` AS `categoria`
+    ON
+        `subcategoria`.`agenda_categoria_idagenda_categoria` = `categoria`.`idagenda_categoria`
+    """
+    return convertir_en_respuesta('categorias_agenda', query)
+
 @app.route('/api/distritos')
 def distritos():
     query = "SELECT * FROM s_distrito"
@@ -270,6 +285,7 @@ def index():
         "pisos": os.path.join(ROOT_URL, "api", "pisos"),
         "programas": os.path.join(ROOT_URL, "api", "programas"),
         "eventos": os.path.join(ROOT_URL, "api", "eventos"),
+        "categorias_agenda": os.path.join(ROOT_URL, "api", "categorias_agenda"),
     }
     return flask.jsonify(data=data)
 

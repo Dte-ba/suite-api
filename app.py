@@ -209,6 +209,48 @@ def programas():
     """
     return convertir_en_respuesta('programas', query)
 
+@app.route('/api/eventos')
+def eventos():
+    query = """
+        SELECT
+	evento.fecha_inicio AS `fecha_inicio`,
+    evento.fecha_final AS `fecha_final`,
+    evento.fecha_carga AS `fecha_de_carga`,
+    evento.cue AS `cue`,
+    escuela.nombre AS `nombre_escuela`,
+    usuarios.nombre AS `usuario`,
+    evento.lugar AS `lugar`,
+    evento.objetivo AS `objetivo`,
+    evento.cant_participantes AS `cantidad_de_participantes`,
+    categoria.nombre AS `categoria`,
+    subcategoria.nombre AS `subcategoria`,
+    evento.minuta AS `minuta`,
+    evento.acta AS `acta`
+FROM
+	`agenda` AS `evento`
+INNER JOIN
+	`s_usuarios` AS `usuarios`
+ON
+	`evento`.`s_usuarios_ids_usuarios` = `usuarios`.`ids_usuarios`
+INNER JOIN
+	`agenda_detalle` AS `detalle`
+ON
+	`evento`.`idagenda` = `detalle`.`agenda_idagenda`
+INNER JOIN
+	`agenda_subcategoria` AS `subcategoria`
+ON
+	`detalle`.`agenda_subcategoria_idagenda_subcategoria` = `subcategoria`.`idagenda_subcategoria`
+INNER JOIN
+	`agenda_categoria` AS `categoria`
+ON
+	`subcategoria`.`agenda_categoria_idagenda_categoria` = `categoria`.`idagenda_categoria`
+INNER JOIN
+	`s_escuela` AS `escuela`
+ON
+	`evento`.`ids_escuela` = `escuela`.`ids_escuela`
+    """
+    return convertir_en_respuesta('eventos', query)
+
 @app.route('/api/distritos')
 def distritos():
     query = "SELECT * FROM s_distrito"
@@ -225,6 +267,7 @@ def index():
         "contactos": os.path.join(ROOT_URL, "api", "contactos"),
         "pisos": os.path.join(ROOT_URL, "api", "pisos"),
         "programas": os.path.join(ROOT_URL, "api", "programas"),
+        "eventos": os.path.join(ROOT_URL, "api", "eventos"),
     }
     return flask.jsonify(data=data)
 

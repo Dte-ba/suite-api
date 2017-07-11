@@ -248,6 +248,8 @@ INNER JOIN
 	`s_escuela` AS `escuela`
 ON
 	`evento`.`ids_escuela` = `escuela`.`ids_escuela`
+WHERE
+    `evento`.estado = 1
     """
     return convertir_en_respuesta('eventos', query)
 

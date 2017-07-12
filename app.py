@@ -272,6 +272,7 @@ def categorias_agenda():
 def tickets():
     query = """
     SELECT
+        tarea.ids_ticket AS `id_ticket_original`,
         tarea.fecha_alta AS `fecha_alta`,
         tipo.nombre AS `motivo`,
         estado.nombre AS `estado`,
@@ -301,6 +302,27 @@ def tickets():
     """
     return convertir_en_respuesta('tickets', query)
 
+@app.route('/api/comentarios_tickets')
+def comentarios_tickets():
+    query = """
+    SELECT
+    	tarea.ids_ticket AS `id_ticket_original`,
+        comentarios.observaciones AS `comentario`,
+        usuario.nombre AS `autor_del_comentario`,
+        comentarios.fecha_alta AS `fecha`
+    FROM
+        `s_ticket_novedades` AS `comentarios`
+    INNER JOIN
+        `s_ticket` AS `tarea`
+    ON
+        `comentarios`.`ids_ticket` = `tarea`.`ids_ticket`
+    INNER JOIN
+            `s_usuarios` AS `usuario`
+        ON
+            `tarea`.`ids_usuarios` = `usuario`.`ids_usuarios`
+    """
+    return convertir_en_respuesta('comentarios_tickets', query)
+
 @app.route('/api/distritos')
 def distritos():
     query = "SELECT * FROM s_distrito"
@@ -320,6 +342,7 @@ def index():
         "eventos": os.path.join(ROOT_URL, "api", "eventos"),
         "categorias_agenda": os.path.join(ROOT_URL, "api", "categorias_agenda"),
         "tickets": os.path.join(ROOT_URL, "api", "tickets"),
+        "comentarios_tickets": os.path.join(ROOT_URL, "api", "comentarios_tickets"),
     }
     return flask.jsonify(data=data)
 

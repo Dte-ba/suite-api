@@ -268,6 +268,39 @@ def categorias_agenda():
     """
     return convertir_en_respuesta('categorias_agenda', query)
 
+@app.route('/api/tickets')
+def tickets():
+    query = """
+    SELECT
+        tarea.fecha_alta AS `fecha_alta`,
+        tipo.nombre AS `motivo`,
+        estado.nombre AS `estado`,
+        tarea.prioridad AS `prioridad`,
+        usuario.nombre AS `usuario`,
+        escuela.cue AS `cue`,
+        tarea.observaciones AS `descripcion`,
+        tarea.ticket_ConIg AS `ticket_conig`
+    FROM
+        `s_ticket` AS `tarea`
+    INNER JOIN
+        `s_ticket_tipo` AS `tipo`
+    ON
+        `tarea`.`ids_ticket_tipo` = `tipo`.`ids_ticket_tipo`
+    INNER JOIN
+        `s_ticket_estado` AS `estado`
+    ON
+        `tarea`.`ids_ticket_estado` = `estado`.`ids_ticket_estado`
+    INNER JOIN
+        `s_usuarios` AS `usuario`
+    ON
+        `tarea`.`ids_usuarios` = `usuario`.`ids_usuarios`
+    INNER JOIN
+        `s_escuela` AS `escuela`
+    ON
+        `tarea`.`ids_escuela` = `escuela`.`ids_escuela`
+    """
+    return convertir_en_respuesta('tickets', query)
+
 @app.route('/api/distritos')
 def distritos():
     query = "SELECT * FROM s_distrito"
@@ -286,6 +319,7 @@ def index():
         "programas": os.path.join(ROOT_URL, "api", "programas"),
         "eventos": os.path.join(ROOT_URL, "api", "eventos"),
         "categorias_agenda": os.path.join(ROOT_URL, "api", "categorias_agenda"),
+        "tickets": os.path.join(ROOT_URL, "api", "tickets"),
     }
     return flask.jsonify(data=data)
 

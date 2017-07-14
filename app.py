@@ -278,6 +278,7 @@ def tickets():
         estado.nombre AS `estado`,
         tarea.prioridad AS `prioridad`,
         usuario.nombre AS `usuario`,
+        usuario.dni AS `dni_usuario`,
         escuela.cue AS `cue`,
         tarea.observaciones AS `descripcion`,
         tarea.ticket_ConIg AS `ticket_conig`

@@ -273,7 +273,7 @@ def tickets():
     query = """
     SELECT
         tarea.ids_ticket AS `id_ticket_original`,
-        tarea.fecha_alta AS `fecha_alta`,
+        DATE_FORMAT(tarea.fecha_alta, "%Y-%m-%d") AS `fecha_alta`,
         tipo.nombre AS `motivo`,
         estado.nombre AS `estado`,
         tarea.prioridad AS `prioridad`,

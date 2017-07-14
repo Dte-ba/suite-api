@@ -300,6 +300,8 @@ def tickets():
         `s_escuela` AS `escuela`
     ON
         `tarea`.`ids_escuela` = `escuela`.`ids_escuela`
+    WHERE
+    	`usuario`.`estado` = 1
     """
     return convertir_en_respuesta('tickets', query)
 

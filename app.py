@@ -312,7 +312,8 @@ def comentarios_tickets():
     	tarea.ids_ticket AS `id_ticket_original`,
         comentarios.observaciones AS `comentario`,
         usuario.nombre AS `autor_del_comentario`,
-        comentarios.fecha_alta AS `fecha`
+        usuario.dni AS `dni_usuario`,
+        DATE_FORMAT(comentarios.fecha_alta, "%Y-%m-%d") AS `fecha`
     FROM
         `s_ticket_novedades` AS `comentarios`
     INNER JOIN

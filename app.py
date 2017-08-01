@@ -209,24 +209,20 @@ def programas():
     """
     return convertir_en_respuesta('programas', query)
 
-@app.route('/api/acompaniantes_evento')
-def acompaniantes_evento():
+@app.route('/api/acompaniantes_eventos')
+def acompaniantes_eventos():
     query = """
         SELECT
-            escuela.cue AS `cue`,
-            programa.nombre AS `programa`
+            usuarios.nombre AS `nombre`,
+            evento_usuarios.agenda_idagenda AS `legacy_id`
         FROM
-            `s_escuela` AS `escuela`
+            `agenda_usuarios` AS `evento_usuarios`
         INNER JOIN
-            `s_programa_escuela` AS `programa_escuela`
+            `s_usuarios` AS `usuarios`
         ON
-            `programa_escuela`.`ids_escuela` = `escuela`.`ids_escuela`
-		INNER JOIN
-        	`s_programa` AS `programa`
-        ON
-        	`programa`.ids_programa = `programa_escuela`.`ids_programa`
+            `evento_usuarios`.`s_usuarios_ids_usuarios` = `usuarios`.`ids_usuarios`
     """
-    return convertir_en_respuesta('acompaniantes_evento', query)
+    return convertir_en_respuesta('acompaniantes_eventos', query)
 
 @app.route('/api/eventos')
 def eventos():
@@ -371,6 +367,7 @@ def index():
         "pisos": os.path.join(ROOT_URL, "api", "pisos"),
         "programas": os.path.join(ROOT_URL, "api", "programas"),
         "eventos": os.path.join(ROOT_URL, "api", "eventos"),
+        "acompaniantes_eventos": os.path.join(ROOT_URL, "api", "acompaniantes_eventos"),
         "categorias_agenda": os.path.join(ROOT_URL, "api", "categorias_agenda"),
         "tickets": os.path.join(ROOT_URL, "api", "tickets"),
         "comentarios_tickets": os.path.join(ROOT_URL, "api", "comentarios_tickets"),

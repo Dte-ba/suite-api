@@ -231,10 +231,14 @@ def acompaniantes_evento():
 @app.route('/api/eventos')
 def eventos():
     query = """
-        SELECT
+SELECT
             evento.idagenda AS `legacy_id`,
-        	evento.fecha_inicio AS `fecha_inicio`,
-            evento.fecha_final AS `fecha_final`,
+            DATE_FORMAT(evento.fecha_inicio, "%Y-%m-%d") AS `fecha_inicio`,
+            DATE_FORMAT(evento.fecha_inicio, "%H:%i:%s") AS `hora_inicio`,
+            DATE_FORMAT(evento.fecha_final, "%Y-%m-%d") AS `fecha_final`,
+            DATE_FORMAT(evento.fecha_final, "%H:%i:%s") AS `hora_final`,
+        	evento.fecha_inicio AS `datetime_inicio`,
+            evento.fecha_final AS `datetime_final`,
             evento.fecha_carga AS `fecha_de_carga`,
             evento.cue AS `cue`,
             escuela.nombre AS `nombre_escuela`,

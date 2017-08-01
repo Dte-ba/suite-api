@@ -231,13 +231,13 @@ def acompaniantes_evento():
 @app.route('/api/eventos')
 def eventos():
     query = """
-SELECT
+        SELECT
             evento.idagenda AS `legacy_id`,
             DATE_FORMAT(evento.fecha_inicio, "%Y-%m-%d") AS `fecha_inicio`,
             DATE_FORMAT(evento.fecha_inicio, "%H:%i:%s") AS `hora_inicio`,
             DATE_FORMAT(evento.fecha_final, "%Y-%m-%d") AS `fecha_final`,
             DATE_FORMAT(evento.fecha_final, "%H:%i:%s") AS `hora_final`,
-        	evento.fecha_inicio AS `datetime_inicio`,
+            evento.fecha_inicio AS `datetime_inicio`,
             evento.fecha_final AS `datetime_final`,
             evento.fecha_carga AS `fecha_de_carga`,
             evento.cue AS `cue`,
@@ -252,29 +252,31 @@ SELECT
             evento.minuta AS `minuta`,
             evento.acta AS `acta`
         FROM
-        	`agenda` AS `evento`
+            `agenda` AS `evento`
         INNER JOIN
-        	`s_usuarios` AS `usuarios`
+            `s_usuarios` AS `usuarios`
         ON
-        	`evento`.`s_usuarios_ids_usuarios` = `usuarios`.`ids_usuarios`
+            `evento`.`s_usuarios_ids_usuarios` = `usuarios`.`ids_usuarios`
         INNER JOIN
-        	`agenda_detalle` AS `detalle`
+            `agenda_detalle` AS `detalle`
         ON
-        	`evento`.`idagenda` = `detalle`.`agenda_idagenda`
+            `evento`.`idagenda` = `detalle`.`agenda_idagenda`
         INNER JOIN
-        	`agenda_subcategoria` AS `subcategoria`
+            `agenda_subcategoria` AS `subcategoria`
         ON
-        	`detalle`.`agenda_subcategoria_idagenda_subcategoria` = `subcategoria`.`idagenda_subcategoria`
+            `detalle`.`agenda_subcategoria_idagenda_subcategoria` = `subcategoria`.`idagenda_subcategoria`
         INNER JOIN
-        	`agenda_categoria` AS `categoria`
+            `agenda_categoria` AS `categoria`
         ON
-        	`subcategoria`.`agenda_categoria_idagenda_categoria` = `categoria`.`idagenda_categoria`
+            `subcategoria`.`agenda_categoria_idagenda_categoria` = `categoria`.`idagenda_categoria`
         INNER JOIN
-        	`s_escuela` AS `escuela`
+            `s_escuela` AS `escuela`
         ON
-        	`evento`.`ids_escuela` = `escuela`.`ids_escuela`
+            `evento`.`ids_escuela` = `escuela`.`ids_escuela`
         WHERE
-            `evento`.estado = 1
+            (
+                `evento`.`fecha_inicio` LIKE '%2016%' OR `evento`.`fecha_inicio` LIKE '%2017'
+            ) AND `evento`.`estado` = 1
     """
     return convertir_en_respuesta('eventos', query)
 

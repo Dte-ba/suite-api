@@ -232,6 +232,7 @@ def acompaniantes_evento():
 def eventos():
     query = """
         SELECT
+            evento.idagenda AS `legacy_id`,
         	evento.fecha_inicio AS `fecha_inicio`,
             evento.fecha_final AS `fecha_final`,
             evento.fecha_carga AS `fecha_de_carga`,

@@ -214,6 +214,7 @@ def acompaniantes_eventos():
     query = """
         SELECT
             usuarios.nombre AS `nombre`,
+            usuarios.dni AS `dni_usuario`,
             evento_usuarios.agenda_idagenda AS `legacy_id`
         FROM
             `agenda_usuarios` AS `evento_usuarios`

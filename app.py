@@ -209,47 +209,67 @@ def programas():
     """
     return convertir_en_respuesta('programas', query)
 
+@app.route('/api/acompaniantes_evento')
+def acompaniantes_evento():
+    query = """
+        SELECT
+            escuela.cue AS `cue`,
+            programa.nombre AS `programa`
+        FROM
+            `s_escuela` AS `escuela`
+        INNER JOIN
+            `s_programa_escuela` AS `programa_escuela`
+        ON
+            `programa_escuela`.`ids_escuela` = `escuela`.`ids_escuela`
+		INNER JOIN
+        	`s_programa` AS `programa`
+        ON
+        	`programa`.ids_programa = `programa_escuela`.`ids_programa`
+    """
+    return convertir_en_respuesta('acompaniantes_evento', query)
+
 @app.route('/api/eventos')
 def eventos():
     query = """
         SELECT
-	evento.fecha_inicio AS `fecha_inicio`,
-    evento.fecha_final AS `fecha_final`,
-    evento.fecha_carga AS `fecha_de_carga`,
-    evento.cue AS `cue`,
-    escuela.nombre AS `nombre_escuela`,
-    usuarios.nombre AS `usuario`,
-    evento.lugar AS `lugar`,
-    evento.objetivo AS `objetivo`,
-    evento.cant_participantes AS `cantidad_de_participantes`,
-    categoria.nombre AS `categoria`,
-    subcategoria.nombre AS `subcategoria`,
-    evento.minuta AS `minuta`,
-    evento.acta AS `acta`
-FROM
-	`agenda` AS `evento`
-INNER JOIN
-	`s_usuarios` AS `usuarios`
-ON
-	`evento`.`s_usuarios_ids_usuarios` = `usuarios`.`ids_usuarios`
-INNER JOIN
-	`agenda_detalle` AS `detalle`
-ON
-	`evento`.`idagenda` = `detalle`.`agenda_idagenda`
-INNER JOIN
-	`agenda_subcategoria` AS `subcategoria`
-ON
-	`detalle`.`agenda_subcategoria_idagenda_subcategoria` = `subcategoria`.`idagenda_subcategoria`
-INNER JOIN
-	`agenda_categoria` AS `categoria`
-ON
-	`subcategoria`.`agenda_categoria_idagenda_categoria` = `categoria`.`idagenda_categoria`
-INNER JOIN
-	`s_escuela` AS `escuela`
-ON
-	`evento`.`ids_escuela` = `escuela`.`ids_escuela`
-WHERE
-    `evento`.estado = 1
+        	evento.fecha_inicio AS `fecha_inicio`,
+            evento.fecha_final AS `fecha_final`,
+            evento.fecha_carga AS `fecha_de_carga`,
+            evento.cue AS `cue`,
+            escuela.nombre AS `nombre_escuela`,
+            usuarios.nombre AS `usuario`,
+            usuarios.dni AS `dni_usuario`,
+            evento.lugar AS `lugar`,
+            evento.objetivo AS `objetivo`,
+            evento.cant_participantes AS `cantidad_de_participantes`,
+            categoria.nombre AS `categoria`,
+            subcategoria.nombre AS `subcategoria`,
+            evento.minuta AS `minuta`,
+            evento.acta AS `acta`
+        FROM
+        	`agenda` AS `evento`
+        INNER JOIN
+        	`s_usuarios` AS `usuarios`
+        ON
+        	`evento`.`s_usuarios_ids_usuarios` = `usuarios`.`ids_usuarios`
+        INNER JOIN
+        	`agenda_detalle` AS `detalle`
+        ON
+        	`evento`.`idagenda` = `detalle`.`agenda_idagenda`
+        INNER JOIN
+        	`agenda_subcategoria` AS `subcategoria`
+        ON
+        	`detalle`.`agenda_subcategoria_idagenda_subcategoria` = `subcategoria`.`idagenda_subcategoria`
+        INNER JOIN
+        	`agenda_categoria` AS `categoria`
+        ON
+        	`subcategoria`.`agenda_categoria_idagenda_categoria` = `categoria`.`idagenda_categoria`
+        INNER JOIN
+        	`s_escuela` AS `escuela`
+        ON
+        	`evento`.`ids_escuela` = `escuela`.`ids_escuela`
+        WHERE
+            `evento`.estado = 1
     """
     return convertir_en_respuesta('eventos', query)
 

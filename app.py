@@ -359,6 +359,59 @@ def comentarios_tickets():
     """
     return convertir_en_respuesta('comentarios_tickets', query)
 
+@app.route('/api/validaciones')
+def validaciones():
+    query = """
+        SELECT
+            validaciones.ids_validaciones AS `legacy_id`,
+            validaciones.fecha AS `fecha_de_alta`,
+            escuela.nombre AS `escuela`,
+            validaciones.cue AS `cue`,
+            validaciones.estado AS `estado`,
+            validaciones.cantidad AS `cantidad`,
+            usuarios.nombre AS `usuario`,
+            usuarios.dni AS `dni_usuario`
+        FROM
+            `s_validaciones` AS `validaciones`
+            INNER JOIN
+            `s_escuela` AS `escuela`
+            ON
+            validaciones.ids_escuela = escuela.ids_escuela
+            inner JOIN
+            s_usuarios AS `usuarios`
+            ON
+           	validaciones.ids_usuarios = usuarios.ids_usuarios
+        WHERE
+        	`validaciones`.`fecha` LIKE '%2016%' OR `validaciones`.`fecha` LIKE '%2017%'
+    """
+    return convertir_en_respuesta('validaciones', query)
+
+@app.route('/api/historial_validaciones')
+def historial_validaciones():
+    query = """
+        SELECT
+            historial.fecha AS `fecha`,
+            usuario.nombre AS `usuario`,
+            usuario.dni AS `dni_usuario`,
+            historial.cantidad AS `cantidad`,
+            historial.observaciones AS `observaciones`,
+            historial.ids_validaciones AS `legacy_id`
+
+        FROM
+            s_validacion_historial AS `historial`
+            inner JOIN
+            s_validaciones AS `validacion`
+            ON
+            historial.ids_validaciones = validacion.ids_validaciones
+            inner JOIN
+            s_usuarios AS `usuario`
+            ON
+            historial.ids_usuarios = usuario.ids_usuarios
+            WHERE
+                	historial.fecha LIKE '%2016%' OR historial.fecha LIKE '%2017%'
+    """
+    return convertir_en_respuesta('historial_validaciones', query)
+
 @app.route('/api/distritos')
 def distritos():
     query = "SELECT * FROM s_distrito"
@@ -380,6 +433,8 @@ def index():
         "categorias_agenda": os.path.join(ROOT_URL, "api", "categorias_agenda"),
         "tickets": os.path.join(ROOT_URL, "api", "tickets"),
         "comentarios_tickets": os.path.join(ROOT_URL, "api", "comentarios_tickets"),
+        "validaciones": os.path.join(ROOT_URL, "api", "validaciones"),
+        "historial_validaciones": os.path.join(ROOT_URL, "api", "historial_validaciones"),
     }
     return flask.jsonify(data=data)
 

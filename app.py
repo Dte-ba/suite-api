@@ -412,6 +412,33 @@ def historial_validaciones():
     """
     return convertir_en_respuesta('historial_validaciones', query)
 
+@app.route('/api/conformaciones')
+def conformaciones():
+    query = """
+        SELECT
+            principal.cue AS cue_principal,
+            principal.nombre AS nombre_escuela_principal,
+        	s_escuela.cue AS cue_conformado,
+            s_escuela.nombre AS nombre_escuela_conformada,
+            s_anexa_motivo.nombre AS motivo,
+            s_escuela_anexa.fecha AS fecha
+        FROM
+            s_escuela
+        INNER JOIN
+            s_escuela_anexa
+        ON
+            s_escuela.ids_escuela = s_escuela_anexa.ids_escuela
+        INNER JOIN
+            s_escuela AS principal
+        ON
+            s_escuela_anexa.ids_escuela_principal = principal.ids_escuela
+        INNER JOIN
+            s_anexa_motivo
+        ON
+            s_anexa_motivo.ids_anexa_motivo = s_escuela_anexa.ids_anexa_motivo
+    """
+    return convertir_en_respuesta('conformaciones', query)
+
 @app.route('/api/distritos')
 def distritos():
     query = "SELECT * FROM s_distrito"
@@ -435,6 +462,7 @@ def index():
         "comentarios_tickets": os.path.join(ROOT_URL, "api", "comentarios_tickets"),
         "validaciones": os.path.join(ROOT_URL, "api", "validaciones"),
         "historial_validaciones": os.path.join(ROOT_URL, "api", "historial_validaciones"),
+        "conformaciones": os.path.join(ROOT_URL, "api", "conformaciones"),
     }
     return flask.jsonify(data=data)
 

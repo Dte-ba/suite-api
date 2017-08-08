@@ -421,7 +421,7 @@ def conformaciones():
         	s_escuela.cue AS cue_conformado,
             s_escuela.nombre AS nombre_escuela_conformada,
             s_anexa_motivo.nombre AS motivo,
-            s_escuela_anexa.fecha AS fecha
+            DATE_FORMAT(s_escuela_anexa.fecha, "%Y-%m-%d") AS fecha
         FROM
             s_escuela
         INNER JOIN

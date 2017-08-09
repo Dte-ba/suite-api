@@ -395,7 +395,8 @@ def historial_validaciones():
             usuario.dni AS `dni_usuario`,
             historial.cantidad AS `cantidad`,
             historial.observaciones AS `observaciones`,
-            historial.ids_validaciones AS `legacy_id`
+            historial.ids_validaciones AS `validacion_legacy_id`,
+            historial.ids_validacion_historial AS `legacy_id`
 
         FROM
             s_validacion_historial AS `historial`

@@ -364,7 +364,7 @@ def validaciones():
     query = """
         SELECT
             validaciones.ids_validaciones AS `legacy_id`,
-            validaciones.fecha AS `fecha_de_alta`,
+            DATE_FORMAT(validaciones.fecha, "%Y-%m-%d") AS `fecha_de_alta`,
             escuela.nombre AS `escuela`,
             validaciones.cue AS `cue`,
             validaciones.estado AS `estado`,

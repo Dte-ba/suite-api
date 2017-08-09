@@ -390,7 +390,7 @@ def validaciones():
 def historial_validaciones():
     query = """
         SELECT
-            historial.fecha AS `fecha`,
+            DATE_FORMAT(historial.fecha, "%Y-%m-%d") AS `fecha`,
             usuario.nombre AS `usuario`,
             usuario.dni AS `dni_usuario`,
             historial.cantidad AS `cantidad`,

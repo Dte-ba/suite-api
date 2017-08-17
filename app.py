@@ -81,6 +81,53 @@ def usuarios():
     """
     return convertir_en_respuesta('usuarios', query)
 
+@app.route('/api/paquetes')
+def paquetes():
+    query = """
+        SELECT
+            paquete.id_paquete AS legacy_id,
+            paquete.region AS region,
+            paquete.cue AS cue,
+            paquete.ne AS ne,
+            paquete.serie AS servidor_serie,
+            paquete.idhardware AS idhardware,
+            paquete.marca AS marca_de_arranque,
+            paquete.archivo AS llave_servidor,
+            DATE_FORMAT(paquete.fecha, "%Y-%m-%d") AS `fecha_pedido`,
+            paquete.comentario AS comentario,
+            paquete.carpeta AS carpeta_paquete,
+            DATE_FORMAT(paquete.envio_anses, "%Y-%m-%d") AS `fecha_envio_anses`,
+            paquete.zipanses AS zipanses,
+            paquete.estado AS estado,
+            DATE_FORMAT(paquete.fecha_devolucion, "%Y-%m-%d") AS `fecha_devolucion`,
+            paquete.leido AS leido
+        FROM
+            `paquetes` AS paquete
+    """
+    return convertir_en_respuesta('paquetes', query)
+
+@app.route('/api/devoluciones')
+def devoluciones():
+    query = """
+        SELECT
+            devolucion.id_devolucion AS legacy_id,
+            paquete.id_paquete AS paquete_legacy_id,
+            devolucion.archivo AS archivo_devolucion,
+            DATE_FORMAT(
+                devolucion.fecha_proceso,
+                "%Y-%m-%d"
+            ) AS `fecha_proceso`,
+            devolucion.procesado AS procesado,
+            devolucion.comentarios AS comentarios
+        FROM
+            `devoluciones` AS devolucion
+        INNER JOIN
+            paquetes AS paquete
+        ON
+            paquete.id_devolucion = devolucion.id_devolucion
+    """
+    return convertir_en_respuesta('devoluciones', query)
+
 @app.route('/api/escuelas')
 def escuelas():
     query = """
@@ -464,6 +511,8 @@ def index():
         "validaciones": os.path.join(ROOT_URL, "api", "validaciones"),
         "historial_validaciones": os.path.join(ROOT_URL, "api", "historial_validaciones"),
         "conformaciones": os.path.join(ROOT_URL, "api", "conformaciones"),
+        "paquetes": os.path.join(ROOT_URL, "api", "paquetes"),
+        "devoluciones": os.path.join(ROOT_URL, "api", "devoluciones"),
     }
     return flask.jsonify(data=data)
 

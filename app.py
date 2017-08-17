@@ -103,6 +103,8 @@ def paquetes():
             paquete.leido AS leido
         FROM
             `paquetes` AS paquete
+        WHERE
+        	paquete.fecha LIKE '%2016%' OR paquete.fecha LIKE '%2017%'
     """
     return convertir_en_respuesta('paquetes', query)
 
@@ -125,6 +127,8 @@ def devoluciones():
             paquetes AS paquete
         ON
             paquete.id_devolucion = devolucion.id_devolucion
+        WHERE
+        	devolucion.fecha_proceso LIKE '%2016%' OR devolucion.fecha_proceso LIKE '%2017%'
     """
     return convertir_en_respuesta('devoluciones', query)
 

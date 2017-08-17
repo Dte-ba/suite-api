@@ -178,6 +178,7 @@ def escuelas():
 def pisos():
     query = """
         SELECT
+            piso.ids_piso AS `legacy_id`,
             escuela.cue AS `cue`,
             servidor.marca AS `marca`,
             servidor.serie AS `serie`,

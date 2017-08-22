@@ -280,7 +280,7 @@ def acompaniantes_eventos():
         	`evento_usuarios`.`agenda_idagenda` = `evento`.`idagenda`
         WHERE
             (
-                `evento`.`fecha_inicio` LIKE '%2016%' OR `evento`.`fecha_inicio` LIKE '%2017'
+                `evento`.`fecha_inicio` LIKE '%2016%' OR `evento`.`fecha_inicio` LIKE '%2017%'
             ) AND `evento`.`estado` = 1
     """
     return convertir_en_respuesta('acompaniantes_eventos', query)

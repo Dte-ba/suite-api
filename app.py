@@ -332,7 +332,7 @@ def eventos():
             `evento`.`ids_escuela` = `escuela`.`ids_escuela`
         WHERE
             (
-                `evento`.`fecha_inicio` LIKE '%2016%' OR `evento`.`fecha_inicio` LIKE '%2017'
+                `evento`.`fecha_inicio` LIKE '%2016%' OR `evento`.`fecha_inicio` LIKE '%2017%'
             ) AND `evento`.`estado` = 1
     """
     return convertir_en_respuesta('eventos', query)

@@ -100,7 +100,8 @@ def paquetes():
             paquete.zipanses AS zipanses,
             paquete.estado AS estado,
             DATE_FORMAT(paquete.fecha_devolucion, "%Y-%m-%d") AS `fecha_devolucion`,
-            paquete.leido AS leido
+            paquete.leido AS leido,
+            paquete.id_devolucion AS id_devolucion
         FROM
             `paquetes` AS paquete
         WHERE

@@ -338,6 +338,60 @@ def eventos():
     """
     return convertir_en_respuesta('eventos', query)
 
+@app.route('/api/eventos_por_perfil')
+def eventos(perfil_id):
+
+    query = """
+        SELECT
+            evento.idagenda AS `legacy_id`,
+            DATE_FORMAT(evento.fecha_inicio, "%Y-%m-%d") AS `fecha_inicio`,
+            DATE_FORMAT(evento.fecha_inicio, "%H:%i:%s") AS `hora_inicio`,
+            DATE_FORMAT(evento.fecha_final, "%Y-%m-%d") AS `fecha_final`,
+            DATE_FORMAT(evento.fecha_final, "%H:%i:%s") AS `hora_final`,
+            evento.fecha_inicio AS `datetime_inicio`,
+            evento.fecha_final AS `datetime_final`,
+            evento.fecha_carga AS `fecha_de_carga`,
+            evento.cue AS `cue`,
+            escuela.nombre AS `nombre_escuela`,
+            usuarios.nombre AS `usuario`,
+            usuarios.dni AS `dni_usuario`,
+            evento.lugar AS `lugar`,
+            evento.objetivo AS `objetivo`,
+            evento.cant_participantes AS `cantidad_de_participantes`,
+            categoria.nombre AS `categoria`,
+            subcategoria.nombre AS `subcategoria`,
+            evento.minuta AS `minuta`,
+            evento.acta AS `acta`
+        FROM
+            `agenda` AS `evento`
+        INNER JOIN
+            `s_usuarios` AS `usuarios`
+        ON
+            `evento`.`s_usuarios_ids_usuarios` = `usuarios`.`ids_usuarios`
+        INNER JOIN
+            `agenda_detalle` AS `detalle`
+        ON
+            `evento`.`idagenda` = `detalle`.`agenda_idagenda`
+        INNER JOIN
+            `agenda_subcategoria` AS `subcategoria`
+        ON
+            `detalle`.`agenda_subcategoria_idagenda_subcategoria` = `subcategoria`.`idagenda_subcategoria`
+        INNER JOIN
+            `agenda_categoria` AS `categoria`
+        ON
+            `subcategoria`.`agenda_categoria_idagenda_categoria` = `categoria`.`idagenda_categoria`
+        INNER JOIN
+            `s_escuela` AS `escuela`
+        ON
+            `evento`.`ids_escuela` = `escuela`.`ids_escuela`
+        WHERE
+            (
+                `evento`.`fecha_inicio` LIKE '%2016%' OR `evento`.`fecha_inicio` LIKE '%2017%'
+            ) AND `evento`.`estado` = 1
+    """
+    query += " AND `evento`.`s_usuarios_ids_usuarios` = " + perfil_id
+    return convertir_en_respuesta('eventos', query)
+
 @app.route('/api/categorias_agenda')
 def categorias_agenda():
     query = """
@@ -519,6 +573,8 @@ def index():
         "conformaciones": os.path.join(ROOT_URL, "api", "conformaciones"),
         "paquetes": os.path.join(ROOT_URL, "api", "paquetes"),
         "devoluciones": os.path.join(ROOT_URL, "api", "devoluciones"),
+        "eventos_por_perfil": os.path.join(ROOT_URL, "api", "eventos_por_perfil")
+
     }
     return flask.jsonify(data=data)
 

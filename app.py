@@ -336,7 +336,7 @@ def eventos():
                 `evento`.`fecha_inicio` LIKE '%2016%' OR `evento`.`fecha_inicio` LIKE '%2017%'
             ) AND `evento`.`estado` = 1
     """
-    return convertir_en_respuesta('eventos', query)
+    return convertir_en_respuesta('eventos_por_perfil', query)
 
 @app.route('/api/eventos_por_perfil')
 def eventos(perfil_id):

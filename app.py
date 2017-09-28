@@ -340,7 +340,7 @@ def eventos():
 
 @app.route('/api/eventos_por_perfil')
 def eventos_por_perfil(perfil_id):
-
+    perfil = str(perfil_id)
     query = """
         SELECT
             evento.idagenda AS `legacy_id`,
@@ -387,9 +387,8 @@ def eventos_por_perfil(perfil_id):
         WHERE
             (
                 `evento`.`fecha_inicio` LIKE '%2016%' OR `evento`.`fecha_inicio` LIKE '%2017%'
-            ) AND `evento`.`estado` = 1
-    """
-    query += " AND `evento`.`s_usuarios_ids_usuarios` = " + perfil_id
+            ) AND `evento`.`estado` = 1 AND `evento`.`s_usuarios_ids_usuarios` = """ + perfil
+
     return convertir_en_respuesta('eventos', query)
 
 @app.route('/api/categorias_agenda')

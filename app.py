@@ -339,7 +339,7 @@ def eventos():
     return convertir_en_respuesta('eventos_por_perfil', query)
 
 @app.route('/api/eventos_por_perfil')
-def eventos(perfil_id):
+def eventos_por_perfil(perfil_id):
 
     query = """
         SELECT

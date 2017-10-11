@@ -286,6 +286,31 @@ def acompaniantes_eventos():
     """
     return convertir_en_respuesta('acompaniantes_eventos', query)
 
+@app.route('/api/acompaniantes_eventos_por_perfil')
+def acompaniantes_eventos_por_perfil():
+    perfil = request.args.get('perfil_id')
+    query = """
+        SELECT
+            usuarios.nombre AS `nombre`,
+            usuarios.dni AS `dni_usuario`,
+            evento_usuarios.agenda_idagenda AS `legacy_id`
+        FROM
+            `agenda_usuarios` AS `evento_usuarios`
+        INNER JOIN
+            `s_usuarios` AS `usuarios`
+        ON
+            `evento_usuarios`.`s_usuarios_ids_usuarios` = `usuarios`.`ids_usuarios`
+        INNER JOIN
+        	`agenda` AS `evento`
+        ON
+        	`evento_usuarios`.`agenda_idagenda` = `evento`.`idagenda`
+        WHERE
+            (
+                `evento`.`fecha_inicio` LIKE '%2016%' OR `evento`.`fecha_inicio` LIKE '%2017%'
+            ) AND `evento`.`estado` = 1 AND `usuarios`.`ids_usuarios` =  """ + perfil
+
+    return convertir_en_respuesta('acompaniantes_eventos_por_perfil', query)
+
 @app.route('/api/eventos')
 def eventos():
     query = """
@@ -572,7 +597,9 @@ def index():
         "conformaciones": os.path.join(ROOT_URL, "api", "conformaciones"),
         "paquetes": os.path.join(ROOT_URL, "api", "paquetes"),
         "devoluciones": os.path.join(ROOT_URL, "api", "devoluciones"),
-        "eventos_por_perfil": os.path.join(ROOT_URL, "api", "eventos_por_perfil")
+        "eventos_por_perfil": os.path.join(ROOT_URL, "api", "eventos_por_perfil"),
+        "acompaniantes_eventos_por_perfil": os.path.join(ROOT_URL, "api", "acompaniantes_eventos_por_perfil"),
+
 
     }
     return flask.jsonify(data=data)

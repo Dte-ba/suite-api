@@ -336,11 +336,11 @@ def eventos():
                 `evento`.`fecha_inicio` LIKE '%2016%' OR `evento`.`fecha_inicio` LIKE '%2017%'
             ) AND `evento`.`estado` = 1
     """
-    return convertir_en_respuesta('eventos_por_perfil', query)
+    return convertir_en_respuesta('eventos', query)
 
 @app.route('/api/eventos_por_perfil')
-def eventos_por_perfil(perfil_id):
-    perfil = str(perfil_id)
+def eventos_por_perfil():
+    perfil = request.args.get('perfil_id')
     query = """
         SELECT
             evento.idagenda AS `legacy_id`,
@@ -389,7 +389,7 @@ def eventos_por_perfil(perfil_id):
                 `evento`.`fecha_inicio` LIKE '%2016%' OR `evento`.`fecha_inicio` LIKE '%2017%'
             ) AND `evento`.`estado` = 1 AND `evento`.`s_usuarios_ids_usuarios` = """ + perfil
 
-    return convertir_en_respuesta('eventos', query)
+    return convertir_en_respuesta('eventos_por_perfil', query)
 
 @app.route('/api/categorias_agenda')
 def categorias_agenda():
